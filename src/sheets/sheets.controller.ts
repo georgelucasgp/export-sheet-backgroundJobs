@@ -14,10 +14,10 @@ export class SheetsController {
   @Post()
   @UseInterceptors(FileInterceptor('sheet'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    this.sheetQueue.add(
+    await this.sheetQueue.add(
       'sheet-job',
       { file: file },
-      { attempts: 3, backoff: { type: 'exponential', delay: 10000 } },
+      { attempts: 5, backoff: { type: 'exponential', delay: 5000 } },
     );
     return { message: 'Processando seu arquivo, por favor aguarde...' };
   }
